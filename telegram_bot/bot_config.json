@@ -1,0 +1,8 @@
+{
+  "bot_token": "8718065654:AAEl_oFCp3z6CNuvY9jZ1rOTSbUq8Gld8Yk",
+  "allowed_chat_ids": [
+    2074764115
+  ],
+  "auto_check_interval_minutes": 10,
+  "auto_notify_enabled": true
+}

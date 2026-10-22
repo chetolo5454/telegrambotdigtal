@@ -1,0 +1,6 @@
+{
+  "auto_refresh_minutes": 0,
+  "filter": "fees",
+  "civil_only": true,
+  "enable_notifications": true
+}

@@ -1,0 +1,19 @@
+# Python bytecode & cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Browser profiles and temporary data
+case_tracker_py/data/browser_profile/
+case_tracker_py/data/edge_profile/
+case_tracker_py/data/temp_evidence_*
+
+# Extension folders & Recording dumps (Not needed on server)
+platform-recorder-extension/
+case-tracker-extension/
+case-tracker-extension (1)/
+recording-RAW-*.json
+recording-masked-*.json
+
+# Windows batch files
+*.bat

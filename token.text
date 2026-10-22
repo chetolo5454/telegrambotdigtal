@@ -1,0 +1,44 @@
+{
+    "apiBase": "https://apis.digital.gov.eg",
+    "accessToken": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICI4TWExc2s1dHgxY1dudGkzb3VFQW1OSDRGcFBORjZWbURMWlYwaXRMc1RRIn0.eyJleHAiOjE3OTI2OTAyNTEsImlhdCI6MTc5MjY4OTM1MSwiYXV0aF90aW1lIjoxNzkyNjg5MzUwLCJqdGkiOiJvbnJ0YWM6NTNkMjNiZjMtMjFjNS00MWE4LWI1YjctODdiOTIxNTY4MDc2IiwiaXNzIjoiaHR0cHM6Ly9sb2dpbi5kaS5nb3YuZWcvcmVhbG1zL2RpZ2l0YWxlZ3lwdCIsInN1YiI6ImNhNThjMGY3LWY0MDgtNDc5Ny1iNjZkLTI2NDI2NDYwZWZmOSIsInR5cCI6IkJlYXJlciIsImF6cCI6ImRlIiwic2lkIjoiZTExYmRlNzMtZWYxOC00NmNkLTlkOWEtZDk5ZGQ1OWFiYTZkIiwic2NvcGUiOiJmbmYgbmlkIGVtYWlsIHVzZXJuYW1lIiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJuaWQiOiIyOTAxMDE1MTMwMzczNSIsInVzZXJuYW1lIjoiMDEwOTYzMTcxMDAiLCJmbmYiOiIwIn0.f5vF3H9C5nwspVohzHXiBDAaZaCSRRATVCJu1ehIYznrBbVD1Iuvb7n5WfI3a4Mzk1RD9vsGxmkkfVX6_rXZR-LTkuu7sb73v_fLO-iRzKwxKXElgOmp7ADtzOwYCnD5kjrxRS952qPXx22YlsGSUhnNDYXEucxY8Rs3bYMhcLMTx0Ac53uaqPr6ab0-tLh9lruNbCO21AYlN6x6F_KjN73nCcJsJRo-x5PFchn2H__6xDqIa2ZJdJoVqoPuw1XdT9LbvIsKVznsITp-bt8ll2t7uSZLLugtfVzYabea6jmg0YK-MzLo7rU0XQ3gnhuu2MmhWmNtqprlVMFpawLHKg",
+    "refreshToken": "eyJhbGciOiJIUzUxMiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICIzMjlhNTA3NC03YWE2LTQ3ZTYtOTk1OS0yM2FiZTc0MDU1ZDUifQ.eyJleHAiOjE3OTI2OTExNTEsImlhdCI6MTc5MjY4OTM1MSwianRpIjoiNmNmNGI2MjctYzMwOC00ZGIxLWIzY2EtNzMyZDg3NTQzYjM1IiwiaXNzIjoiaHR0cHM6Ly9sb2dpbi5kaS5nb3YuZWcvcmVhbG1zL2RpZ2l0YWxlZ3lwdCIsImF1ZCI6Imh0dHBzOi8vbG9naW4uZGkuZ292LmVnL3JlYWxtcy9kaWdpdGFsZWd5cHQiLCJzdWIiOiJjYTU4YzBmNy1mNDA4LTQ3OTctYjY2ZC0yNjQyNjQ2MGVmZjkiLCJ0eXAiOiJSZWZyZXNoIiwiYXpwIjoiZGUiLCJzaWQiOiJlMTFiZGU3My1lZjE4LTQ2Y2QtOWQ5YS1kOTlkZDU5YWJhNmQiLCJzY29wZSI6ImZuZiBuaWQgYmFzaWMgZW1haWwgdXNlcm5hbWUifQ.dFrVUMWMdA7SSx8y7BPCcZZKZ1bT-wUBD--7FKIOc906p0feh9k0HWaejxeG3dgytMmo6qm5KWzW6qSeBaNHiA",
+    "updatedAt": "2026-10-22T17:15:51.000Z",
+    "access": {
+        "issuedAt": "2026-10-22T17:15:51+00:00",
+        "expiresAt": "2026-10-22T17:30:51+00:00",
+        "secondsLeft": 899,
+        "claims": {
+            "exp": 1792690251,
+            "iat": 1792689351,
+            "auth_time": 1792689350,
+            "jti": "onrtac:53d23bf3-21c5-41a8-b5b7-87b921568076",
+            "iss": "https://login.di.gov.eg/realms/digitalegypt",
+            "sub": "ca58c0f7-f408-4797-b66d-26426460eff9",
+            "typ": "Bearer",
+            "azp": "de",
+            "sid": "e11bde73-ef18-46cd-9d9a-d99dd59aba6d",
+            "scope": "fnf nid email username",
+            "email_verified": false,
+            "nid": "29010151303735",
+            "username": "01096317100",
+            "fnf": "0"
+        }
+    },
+    "refresh": {
+        "issuedAt": "2026-10-22T17:15:51+00:00",
+        "expiresAt": "2026-10-22T17:45:51+00:00",
+        "secondsLeft": 1799,
+        "claims": {
+            "exp": 1792691151,
+            "iat": 1792689351,
+            "jti": "6cf4b627-c308-4db1-b3ca-732d87543b35",
+            "iss": "https://login.di.gov.eg/realms/digitalegypt",
+            "aud": "https://login.di.gov.eg/realms/digitalegypt",
+            "sub": "ca58c0f7-f408-4797-b66d-26426460eff9",
+            "typ": "Refresh",
+            "azp": "de",
+            "sid": "e11bde73-ef18-46cd-9d9a-d99dd59aba6d",
+            "scope": "fnf nid basic email username"
+        }
+    }
+}

@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>متتبع الدعاوى المدنية | منصة مصر الرقمية</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <div class="header-brand">
+      <div class="logo-icon">⚖️</div>
+      <div>
+        <h1>متتبع الدعاوى المدنية</h1>
+        <div class="sub-brand">منصة مصر الرقمية (Digital Egypt)</div>
+      </div>
+    </div>
+
+    <div class="header-actions">
+      <button id="autoLoginHeaderBtn" class="btn success" title="تسجيل الدخول التلقائي بضغطة زر باستخدام البيانات المحفوظة في ملف login info.text">
+        <span class="icon">⚡</span> <span id="autoLoginHeaderBtnText">جلب التوكن بضغطة زر</span>
+      </button>
+
+      <button id="refreshBtn" class="btn primary">
+        <span class="icon">🔄</span> <span id="refreshBtnText">تحديث الآن</span>
+      </button>
+
+      <button id="loginModalBtn" class="btn outline">
+        <span id="sessionStatusDot" class="status-dot"></span>
+        <span id="loginBtnText">حالة الجلسة</span>
+      </button>
+
+      <div class="dropdown-control">
+        <label for="autoRefresh">تحديث تلقائي:</label>
+        <select id="autoRefresh">
+          <option value="0">متوقف</option>
+          <option value="5">كل 5 دقائق</option>
+          <option value="10">كل 10 دقائق</option>
+          <option value="15">كل 15 دقيقة</option>
+        </select>
+        <span id="countdownBadge" class="countdown-badge" style="display:none;"></span>
+      </div>
+
+      <button id="reconcileBtn" class="btn secondary" title="مطابقة أرقام السداد مع كشف حساب البنك">
+        <span class="icon">💳</span> المطابقة البنكية
+      </button>
+
+      <button id="auditBtn" class="btn secondary" title="عرض سجل كل التغييرات المرصودة بالتواريخ">
+        <span class="icon">📜</span> سجل التدقيق
+      </button>
+
+      <div class="btn-group">
+        <button id="backupBtn" class="btn ghost" title="تصدير أسماء الموكلين المحفوظة محلياً إلى ملف JSON">نسخ احتياطي</button>
+        <button id="restoreBtn" class="btn ghost" title="استرجاع أسماء الموكلين من ملف JSON">استرجاع</button>
+        <input type="file" id="restoreFileInput" accept="application/json" hidden>
+      </div>
+
+      <button id="themeToggleBtn" class="btn icon-only" title="تبديل الوضع الليلي / الفاتح">🌓</button>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main>
+    <!-- Banners -->
+    <div id="errBanner" class="banner err" style="display:none;">
+      <span class="banner-icon">⚠️</span>
+      <span id="errBannerMsg" class="banner-text"></span>
+      <div class="banner-actions">
+        <button id="autoLoginBannerBtn" class="btn small success">⚡ جلب التوكن بضغطة زر</button>
+        <button id="importTokenBannerBtn" class="btn small secondary">📂 استيراد من token.text</button>
+        <button id="errBannerAction" class="btn small outline">خيارات أخرى...</button>
+      </div>
+    </div>
+
+    <div id="chgBanner" class="banner chg" style="display:none;">
+      <span class="banner-icon">🔔</span>
+      <span id="chgBannerMsg" class="banner-text"></span>
+      <button id="ackChgBtn" class="btn small primary">تم الاطلاع</button>
+    </div>
+
+    <!-- Status Bar -->
+    <div class="status-bar">
+      <div id="syncStatus" class="status-item">جارٍ التحميل...</div>
+      <div id="sessionStatusDetail" class="status-item"></div>
+    </div>
+
+    <!-- Toolbar: Filter Chips & Search -->
+    <div class="toolbar">
+      <div id="filterChips" class="chips-container"></div>
+      <div class="search-wrap">
+        <span class="search-icon">🔍</span>
+        <input type="search" id="searchInput" placeholder="بحث باسم الموكل، رقم الطلب، أو رقم السداد...">
+      </div>
+    </div>
+
+    <!-- Table Wrap -->
+    <div class="tablewrap">
+      <table id="casesTable">
+        <thead>
+          <tr>
+            <th style="width:40px;">#</th>
+            <th>رقم الطلب</th>
+            <th>اسم الموكل</th>
+            <th>الحالة والمرحلة</th>
+            <th>آخر تحديث</th>
+            <th>أرقام السداد</th>
+            <th>رقم الطلب بالجهة</th>
+            <th style="text-align:center;">الأدلة الرقمية</th>
+          </tr>
+        </thead>
+        <tbody id="tableRows">
+          <tr>
+            <td colspan="8" class="empty-state">جارٍ جلب البيانات...</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Footer Notice -->
+    <footer>
+      <div>💡 <b>ملاحظة:</b> أسماء الموكلين وسجل التدقيق محفوظة محلياً على جهازك في مجلد الأداة ولا تُرسل لأي طرف خارجي.</div>
+      <div>جلسة الدخول تتجدد تلقائياً ما دام التوكن صالحاً. عند الحاجة يمكنك تسجيل الدخول بضغطة زر عبر المتصفح المدمج.</div>
+    </footer>
+  </main>
+
+  <!-- Modals -->
+
+  <!-- Login / Session Modal -->
+  <div id="loginModal" class="modal-overlay" style="display:none;">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h2>تسجيل الدخول وإدارة الجلسة</h2>
+        <button class="modal-close" id="closeLoginModal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="session-card" id="sessionInfoCard">
+          <div class="info-row">
+            <span>حالة الاتصال:</span>
+            <b id="modalSessionState">—</b>
+          </div>
+          <div class="info-row">
+            <span>الرقم القومي / الحساب:</span>
+            <b id="modalUserNid">—</b>
+          </div>
+          <div class="info-row">
+            <span>صلاحية التوكن:</span>
+            <b id="modalExpiresIn">—</b>
+          </div>
+        </div>
+
+        <div class="tabs-nav">
+          <button id="tabAutoBtn" class="tab-btn active">⚡ 1. جلب التوكن بضغطة زر (ملف login info.text)</button>
+          <button id="tabBrowserBtn" class="tab-btn">🌐 2. تسجيل دخول عبر المتصفح</button>
+          <button id="tabManualBtn" class="tab-btn">📋 3. إدخال التوكن يدوياً</button>
+        </div>
+
+        <!-- Tab 0: One-Click Auto Login (Default & Recommended) -->
+        <div id="tabAutoContent" class="tab-pane active">
+          <div class="cred-card">
+            <div class="info-row">
+              <span>رقم الهاتف المكتشف في الملف:</span>
+              <b id="modalCredPhone">01096317100</b>
+            </div>
+            <div class="info-row">
+              <span>كلمة المرور:</span>
+              <b id="modalCredPass">محفوظة وموجودة بملف login info.text ✅</b>
+            </div>
+            <div class="info-row">
+              <span>ملف token.text الخارجي:</span>
+              <b id="modalTokenFileStatus">جارٍ الفحص...</b>
+            </div>
+          </div>
+
+          <p class="tab-desc">
+            تقوم الأداة تلقائياً بالدخول للبوابة في الخلفية دون الحاجة لفتح المتصفح يدوياً، وجلب التوكن وحفظه في ملف <code>token.text</code> وتحديث قائمة قضاياك فوراً.
+          </p>
+
+          <button id="startAutoLoginBtn" class="btn success full-width large">
+            ⚡ تسجيل الدخول وجلب التوكن الآن (بضغطة زر)
+          </button>
+
+          <button id="importTokenFileModalBtn" class="btn secondary full-width" style="margin-top: 10px;">
+            📂 استيراد التوكن مباشرة من ملف token.text
+          </button>
+
+          <div id="autoLoginProgress" class="login-progress" style="display:none; margin-top: 14px;">
+            <div class="spinner"></div>
+            <span id="autoLoginStatusText">جارٍ إتمام العملية والاتصال بالبوابة...</span>
+          </div>
+        </div>
+
+        <!-- Tab 1: Browser Login -->
+        <div id="tabBrowserContent" class="tab-pane" style="display:none;">
+          <p class="tab-desc">
+            سيتم فتح متصفح Edge أو Chrome تلقائياً على منصة مصر الرقمية. سجّل دخولك بحسابك، وستلتقط الأداة بيانات الجلسة فوراً وتغلق المتصفح.
+          </p>
+          <button id="startBrowserLoginBtn" class="btn primary full-width">
+            🚀 فتح المتصفح لتسجيل الدخول
+          </button>
+          <div id="browserLoginProgress" class="login-progress" style="display:none;">
+            <div class="spinner"></div>
+            <span id="browserLoginStatusText">جارٍ تهيئة المتصفح...</span>
+          </div>
+        </div>
+
+        <!-- Tab 2: Manual Token -->
+        <div id="tabManualContent" class="tab-pane" style="display:none;">
+          <p class="tab-desc">
+            إذا كان لديك رمز الجلسة (accessToken) أو قمت بنسخه من المتصفح، يمكنك لصقه هنا:
+          </p>
+          <div class="form-group">
+            <label for="manualAccessToken">رمز الوصول (Access Token):</label>
+            <textarea id="manualAccessToken" rows="3" placeholder="eyJhbGciOi..."></textarea>
+          </div>
+          <div class="form-group">
+            <label for="manualRefreshToken">رمز التجديد (Refresh Token) - اختياري للتجديد التلقائي:</label>
+            <textarea id="manualRefreshToken" rows="2" placeholder="eyJhbGciOi..."></textarea>
+          </div>
+          <button id="saveManualTokensBtn" class="btn primary full-width">حفظ وتفعيل الجلسة</button>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="logoutBtn" class="btn danger outline">تسجيل الخروج</button>
+        <button class="btn secondary" id="dismissLoginModal">إغلاق</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Audit Log Modal -->
+  <div id="auditModal" class="modal-overlay" style="display:none;">
+    <div class="modal-box large">
+      <div class="modal-header">
+        <h2>سجل التدقيق والتغييرات المرصودة</h2>
+        <button class="modal-close" id="closeAuditModal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-toolbar">
+          <input type="search" id="auditSearchInput" placeholder="بحث برقم الطلب في سجل التدقيق...">
+          <button id="exportAuditJsonBtn" class="btn small secondary">تحميل السجل (JSON)</button>
+        </div>
+        <div class="tablewrap" style="max-height: 400px;">
+          <table>
+            <thead>
+              <tr>
+                <th>التاريخ والوقت</th>
+                <th>رقم الطلب</th>
+                <th>كود الحالة</th>
+                <th>وصف الحالة</th>
+                <th>أرقام السداد</th>
+                <th>النوع</th>
+              </tr>
+            </thead>
+            <tbody id="auditRows"></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn secondary" id="dismissAuditModal">إغلاق</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bank Reconciliation Modal -->
+  <div id="reconcileModal" class="modal-overlay" style="display:none;">
+    <div class="modal-box large">
+      <div class="modal-header">
+        <h2>جدول المطابقة البنكية لأرقام السداد</h2>
+        <button class="modal-close" id="closeReconcileModal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p class="tab-desc">
+          يعرض هذا الجدول جميع الطلبات التي لها أرقام سداد مع توقيت الدفع المسجل لدى المنصة لمقارنتها بإشعارات وكشف حساب البنك.
+        </p>
+        <div class="tablewrap" style="max-height: 420px;">
+          <table>
+            <thead>
+              <tr>
+                <th>رقم الطلب</th>
+                <th>اسم الموكل</th>
+                <th>أرقام السداد</th>
+                <th>عدد عمليات الدفع</th>
+                <th>أول توقيت دفع (القاهرة)</th>
+                <th>الجهة المسجلة</th>
+              </tr>
+            </thead>
+            <tbody id="reconcileRows">
+              <tr><td colspan="6" class="empty-state">جارٍ التحليل...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn secondary" id="dismissReconcileModal">إغلاق</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div id="toast" class="toast"></div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
